@@ -1,21 +1,11 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer:       Prakhar Singh 
--- 
+-- Engineer:       Prakhar Singh  
 -- Create Date:    20:55:28 10/15/2013 
 -- Design Name:    PWM_MODULE
 -- Module Name:    servo - Behavioral 
 -- Project Name:   SERVO-PWM CONTROL
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
+
+-- Revision 1.00 - File Created
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
