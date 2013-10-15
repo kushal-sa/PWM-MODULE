@@ -60,7 +60,7 @@ begin
 	tick <= '1' when counter = 0 else '0';
 	
 	--Changing duty cycle
-	process(button_l, button_r, tick,duty_cycle) 
+	process(button_l, button_r, tick, duty_cycle) 
 		begin
 			duty_cycle_next <= duty_cycle;
 				if tick = '1' then
