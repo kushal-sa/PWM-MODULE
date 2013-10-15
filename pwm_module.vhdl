@@ -56,8 +56,8 @@ begin
 		begin
 			if reset = '1' then
 				pwm_reg <= '0';
-				counter <= '0';
-				duty_cycle <= '0';
+				counter <= 0;
+				duty_cycle <= 0;
 			elsif clk = '1' and clk'event then
 				pwm_reg <= pwm_next;
 				counter <= counter_next;
@@ -73,11 +73,11 @@ begin
 	process(button_l, button_r, tick,duty_cycle) 
 		begin
 			duty_cycle_next <= duty_cycle;
-				if tick='1' then
-					if button_l ='1' and duty_cycle >dcycle_min then
-						duty_cycle_next<=duty_cycle-duty_in; 
-					elsif button_r ='1' and duty_cycle < dcycle_max then
-						duty_cycle_next<=duty_cycle+duty_in;
+				if tick = '1' then
+					if button_l ='1' and duty_cycle > duty_cycle_min then
+						duty_cycle_next <= duty_cycle - duty_in; 
+					elsif button_r = '1' and duty_cycle < duty_cycle_max then
+						duty_cycle_next <= duty_cycle + duty_in;
 					end if;              
 				end if;                            
 	end process;
