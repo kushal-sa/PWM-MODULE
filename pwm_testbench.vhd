@@ -66,26 +66,25 @@ BEGIN
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
-		
 		reset <= '0';
 		button_l <= '0';
 		button_r <= '0';
-
-      wait for 50ns;	
+		wait for clk_period;
 		
-		button_l <= '1';
-		wait for 1 ms;
-		button_l <= '0';
-		
-		wait for 1ms;
+		--button_r <= '1';
+      --wait for clk_period*100;
+		--button_r <= '0';
+		--wait for clk_period*500;
 		
 		button_r <= '1';
-
-      wait for clk_period*10;
-
-      -- insert stimulus here 
-
-      wait;
+		wait for clk_period*400;
+		button_r <= '0';
+		wait for 90ms;
+		
+		button_l <= '1';
+		wait for clk_period*250;
+		button_l <= '0';
+		wait;
    end process;
 
 END;

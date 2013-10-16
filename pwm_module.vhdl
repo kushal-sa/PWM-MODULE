@@ -19,7 +19,7 @@ entity servo is
 end servo;
 
 architecture Behavioral of servo is
-    --period is determined by the frequency of the clock pulse. In this project, the clock pulse is 50MHz.
+    --period is determined by the frequency of the clock pulse. In this project, the clock pulse is of 50MHz.
 	 --Hence the period is 20ms * 50 MHz = 1000000
     constant period: integer:= 1000000;
 	 
@@ -38,7 +38,7 @@ architecture Behavioral of servo is
 	 signal pwm_reg, pwm_next: std_logic;
 	 signal duty_cycle, duty_cycle_next: integer:= 0;
 	 signal counter, counter_next: integer:= 0;
-	 signal tick: std_logic;
+--	 signal tick: std_logic;
 	 
 begin
    --register
@@ -57,19 +57,19 @@ begin
 	
 	counter_next <= 0 when counter = period else counter + 1;
 	
-	tick <= '1' when counter = 0 else '0';
+	--tick <= '1' when counter = 0 else '0';
 	
 	--Changing duty cycle
 	process(button_l, button_r, tick, duty_cycle) 
 		begin
 			duty_cycle_next <= duty_cycle;
-				if tick = '1' then
+				--if tick = '1' then
 					if button_l ='1' and duty_cycle > duty_cycle_min then
 						duty_cycle_next <= duty_cycle - duty_in; 
 					elsif button_r = '1' and duty_cycle < duty_cycle_max then
 						duty_cycle_next <= duty_cycle + duty_in;
 					end if;              
-				end if;                            
+				--end if;                            
 	end process;
 	
 	--Buffer
