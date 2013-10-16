@@ -5,7 +5,7 @@
 -- Module Name:    servo - Behavioral 
 -- Project Name:   SERVO-PWM CONTROL
 
--- Revision 2.00 - Project Complete. Simulation Successful.
+-- Revision 3.00 - Project Complete.
 ----------------------------------------------------------------------------------
 
 LIBRARY ieee;
@@ -17,7 +17,6 @@ END pwm_testbench;
 ARCHITECTURE behavior OF pwm_testbench IS 
  
 	-- Component Declaration for the Unit Under Test (UUT)
- 
 	COMPONENT servo
 	PORT(
 		clk : IN  std_logic;
@@ -28,13 +27,13 @@ ARCHITECTURE behavior OF pwm_testbench IS
 	);
 	END COMPONENT;
 
-	--Inputs
+	-- Inputs
 	signal clk : std_logic := '0';
 	signal reset : std_logic := '0';
 	signal button_l : std_logic := '0';
 	signal button_r : std_logic := '0';
 
-	--Outputs
+	-- Outputs
 	signal pwm : std_logic;
 
 	-- Clock period definitions
@@ -64,22 +63,24 @@ BEGIN
 	stim_proc: process
 	begin		
 
-		-- hold reset state for clk_period.
+		-- Hold reset state for clk_period.
 		reset <= '0';
 		wait for clk_period;
 		
-		-- press the right button for 8ms.
+		-- Press the right button for 8ms.
 		button_r <= '1';
 		wait for clk_period*400;
+		
 		button_r <= '0';
 		wait for 90ms;
 		
-		-- press the left button for 5ms.
+		-- Press the left button for 5ms.
 		button_l <= '1';
 		wait for clk_period*250;
+		
 		button_l <= '0';
 		
-		--Stimulus complete. Wait for next stimulus and hold the waveform.
+		-- Stimulus complete. Hold the  current waveform.
 		wait;
 	end process;
 
