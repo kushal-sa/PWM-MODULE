@@ -5,7 +5,7 @@
 -- Module Name:    servo - Behavioral 
 -- Project Name:   SERVO-PWM CONTROL
 
--- Revision 1.00 - File Created
+-- Revision 2.00 - Project Complete. Simulation Successful.
 ----------------------------------------------------------------------------------
 
 LIBRARY ieee;
@@ -16,75 +16,71 @@ END pwm_testbench;
  
 ARCHITECTURE behavior OF pwm_testbench IS 
  
-    -- Component Declaration for the Unit Under Test (UUT)
+	-- Component Declaration for the Unit Under Test (UUT)
  
-    COMPONENT servo
-    PORT(
-         clk : IN  std_logic;
-         reset : IN  std_logic;
-         button_l : IN  std_logic;
-         button_r : IN  std_logic;
-         pwm : OUT  std_logic
-        );
-    END COMPONENT;
-    
+	COMPONENT servo
+	PORT(
+		clk : IN  std_logic;
+		reset : IN  std_logic;
+		button_l : IN  std_logic;
+		button_r : IN  std_logic;
+		pwm : OUT  std_logic
+	);
+	END COMPONENT;
 
-   --Inputs
-   signal clk : std_logic := '0';
-   signal reset : std_logic := '0';
-   signal button_l : std_logic := '0';
-   signal button_r : std_logic := '0';
+	--Inputs
+	signal clk : std_logic := '0';
+	signal reset : std_logic := '0';
+	signal button_l : std_logic := '0';
+	signal button_r : std_logic := '0';
 
- 	--Outputs
-   signal pwm : std_logic;
+	--Outputs
+	signal pwm : std_logic;
 
-   -- Clock period definitions
+	-- Clock period definitions
    constant clk_period : time := 20 ns;
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: servo PORT MAP (
-          clk => clk,
-          reset => reset,
-          button_l => button_l,
-          button_r => button_r,
-          pwm => pwm
-        );
+	uut: servo PORT MAP (
+		clk => clk,
+		reset => reset,
+		button_l => button_l,
+		button_r => button_r,
+		pwm => pwm
+		);
 
-   -- Clock process definitions
-   clk_process :process
-   begin
+	-- Clock process definitions
+	clk_process :process
+	begin
 		clk <= '0';
 		wait for clk_period/2;
 		clk <= '1';
 		wait for clk_period/2;
-   end process;
- 
+	end process;
 
-   -- Stimulus process
-   stim_proc: process
-   begin		
-      -- hold reset state for 100 ns.
+	-- Stimulus process
+	stim_proc: process
+	begin		
+
+		-- hold reset state for clk_period.
 		reset <= '0';
-		button_l <= '0';
-		button_r <= '0';
 		wait for clk_period;
 		
-		--button_r <= '1';
-      --wait for clk_period*100;
-		--button_r <= '0';
-		--wait for clk_period*500;
-		
+		-- press the right button for 8ms.
 		button_r <= '1';
 		wait for clk_period*400;
 		button_r <= '0';
 		wait for 90ms;
 		
+		-- press the left button for 5ms.
 		button_l <= '1';
 		wait for clk_period*250;
 		button_l <= '0';
+		
+		--Stimulus complete. Wait for next stimulus and hold the waveform.
 		wait;
-   end process;
+	end process;
 
 END;

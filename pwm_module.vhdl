@@ -5,11 +5,12 @@
 -- Module Name:    servo - Behavioral 
 -- Project Name:   SERVO-PWM CONTROL
 
--- Revision 1.00 - File Created
+-- Revision 2.00 - Project Complete. Simulation Successful.
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
+--declaring the servo entity
 entity servo is
     Port ( clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
@@ -18,7 +19,9 @@ entity servo is
            pwm : out  STD_LOGIC);
 end servo;
 
+--beginning of Behavioral architecture of servo.
 architecture Behavioral of servo is
+
     --period is determined by the frequency of the clock pulse. In this project, the clock pulse is of 50MHz.
 	 --Hence the period is 20ms * 50 MHz = 1000000
     constant period: integer:= 1000000;
@@ -35,21 +38,25 @@ architecture Behavioral of servo is
 	 --(standard for servo motors), duty_in = ((duty_cycle_max-duty_cycle_min)*period/speed_of_rotation = 200
 	 constant duty_in: integer:= 200;
 	 
-	 signal pwm_reg, pwm_next: std_logic;
+	 --pwm_temp holds the intermediate values of pwm. pwm_next holds the next value of pwm.
+	 signal pwm_temp, pwm_next: std_logic;
+	 
+	 --duty_cycle, duty_cycle_next hold the corrosponding values of the duty_cycle.
 	 signal duty_cycle, duty_cycle_next: integer:= 0;
+	 
+	 --counter maintains the period of the waveform wrt to clock. counter_next holds the next value of counter.
 	 signal counter, counter_next: integer:= 0;
---	 signal tick: std_logic;
 	 
 begin
-   --register
+   --process to update the circuit, triggered by clock event.
 	process (clk, reset)
 		begin
 			if reset = '1' then
-				pwm_reg <= '0';
+				pwm_temp <= '0';
 				counter <= 0;
 				duty_cycle <= 0;
 			elsif clk = '1' and clk'event then
-				pwm_reg <= pwm_next;
+				pwm_temp <= pwm_next;
 				counter <= counter_next;
 				duty_cycle <= duty_cycle_next;
 			end if;
@@ -57,24 +64,21 @@ begin
 	
 	counter_next <= 0 when counter = period else counter + 1;
 	
-	--tick <= '1' when counter = 0 else '0';
-	
-	--Changing duty cycle
-	process(button_l, button_r, tick, duty_cycle) 
+	--process for changing the duty cycle, operates on button (left or right) press. 
+	process(button_l, button_r, duty_cycle) 
 		begin
 			duty_cycle_next <= duty_cycle;
-				--if tick = '1' then
-					if button_l ='1' and duty_cycle > duty_cycle_min then
-						duty_cycle_next <= duty_cycle - duty_in; 
-					elsif button_r = '1' and duty_cycle < duty_cycle_max then
-						duty_cycle_next <= duty_cycle + duty_in;
-					end if;              
-				--end if;                            
+				if button_l ='1' and duty_cycle > duty_cycle_min then
+					duty_cycle_next <= duty_cycle - duty_in; 
+				elsif button_r = '1' and duty_cycle < duty_cycle_max then
+					duty_cycle_next <= duty_cycle + duty_in;
+				end if;                                        
 	end process;
 	
-	--Buffer
-	pwm<=pwm_reg;     
+	--buffer values are transferred to pwm and pwm_next. 
+	pwm<=pwm_temp;     
 	pwm_next<= '1' when counter < duty_cycle else '0';    
 	
 end Behavioral;
+--end of Behavioral architecture of servo.
 
